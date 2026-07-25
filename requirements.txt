@@ -6,3 +6,4 @@ scipy==1.18.0
 joblib==1.5.3
 streamlit-aggrid==1.2.1.post2
 nltk==3.10.0
+huggingface_hub==1.24.0

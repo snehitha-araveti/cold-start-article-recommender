@@ -13,7 +13,7 @@ import streamlit as st
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if PROJECT_ROOT not in sys.path:
     sys.path.append(PROJECT_ROOT)
-
+from huggingface_hub import hf_hub_download
 from src.recommender import recommend_articles
 from src.utils import get_shared_keywords
 
@@ -27,21 +27,39 @@ st.set_page_config(
     layout="centered"
 )
 
+
 @st.cache_resource
 def load_artifacts():
 
-    df = joblib.load("models/clean_articles.pkl")
+    repo_id = "abcd922436/cold-start-article-recommender-artifacts"
 
-    vectorizer = joblib.load(
-        "models/tfidf_vectorizer.joblib"
+    # Download full optimized dataset
+    dataset_path = hf_hub_download(
+        repo_id=repo_id,
+        filename="clean_articles_full_optimized.pkl",
+        repo_type="dataset"
     )
 
-    tfidf_matrix = joblib.load(
-        "models/tfidf_matrix.joblib"
+    # Download TF-IDF matrix
+    tfidf_path = hf_hub_download(
+        repo_id=repo_id,
+        filename="tfidf_matrix.joblib",
+        repo_type="dataset"
     )
+
+    # Download TF-IDF vectorizer
+    vectorizer_path = hf_hub_download(
+        repo_id=repo_id,
+        filename="tfidf_vectorizer.joblib",
+        repo_type="dataset"
+    )
+
+    # Load artifacts
+    df = joblib.load(dataset_path)
+    tfidf_matrix = joblib.load(tfidf_path)
+    vectorizer = joblib.load(vectorizer_path)
 
     return df, vectorizer, tfidf_matrix
-
 
 df, vectorizer, tfidf_matrix = load_artifacts()
 
