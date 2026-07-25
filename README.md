@@ -824,24 +824,6 @@ This project demonstrates practical experience with:
 
 ---
 
-# 📌 Project Status
-
-```text
-Phase 1  – Project Planning             ✅
-Phase 2  – Dataset Selection            ✅
-Phase 3  – Exploratory Data Analysis    ✅
-Phase 4  – Text Preprocessing            ✅
-Phase 5  – TF-IDF Feature Engineering   ✅
-Phase 6  – Recommendation Engine        ✅
-Phase 7  – Streamlit Application        ✅
-Phase 8  – UI Improvements               ✅
-Phase 9  – Model Serialization           ✅
-Phase 10 – GitHub Integration            ✅
-Phase 11 – Deployment                    🔄
-```
-
----
-
 # 👩‍💻 Author
 
 **Snehitha Araveti**
