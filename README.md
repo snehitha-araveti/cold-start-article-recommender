@@ -4,6 +4,12 @@ A **content-based news article recommendation system** designed to address the *
 
 The system analyzes article content and recommends similar news articles without requiring user ratings, browsing history, likes, or previous interactions.
 
+![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
+![Scikit-learn](https://img.shields.io/badge/Scikit--learn-ML-orange?logo=scikit-learn)
+![Streamlit](https://img.shields.io/badge/Streamlit-App-red?logo=streamlit)
+![Pandas](https://img.shields.io/badge/Pandas-Data%20Processing-purple?logo=pandas)
+![Status](https://img.shields.io/badge/Status-Deployment%20Preparation-yellow)
+
 🚀 **Live Demo:**  
 https://cold-start-article-recommender.streamlit.app/
 
