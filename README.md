@@ -1,201 +1,144 @@
 # 📰 Cold Start Article Recommendation System
 
-> A content-based news article recommendation system that recommends relevant articles without requiring historical user ratings or interaction data.
+A **content-based news article recommendation system** designed to address the **item cold-start problem** using **TF-IDF vectorization and Cosine Similarity**.
 
-![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
-![Scikit-learn](https://img.shields.io/badge/Scikit--learn-ML-orange?logo=scikit-learn)
-![Streamlit](https://img.shields.io/badge/Streamlit-App-red?logo=streamlit)
-![Pandas](https://img.shields.io/badge/Pandas-Data%20Processing-purple?logo=pandas)
-![Status](https://img.shields.io/badge/Status-Deployment%20Preparation-yellow)
+The system analyzes article content and recommends similar news articles without requiring user ratings, browsing history, likes, or previous interactions.
+
+🚀 **Live Demo:**  
+https://cold-start-article-recommender.streamlit.app/
 
 ---
 
-## 📌 Overview
+## 📌 Project Overview
 
-The **Cold Start Article Recommendation System** is a content-based recommendation engine designed to recommend similar news articles even when little or no user interaction history is available.
+Recommendation systems commonly depend on historical user interactions to understand user preferences. This creates a major challenge when a **new article has no interaction history**.
 
-Traditional collaborative filtering systems generally depend on signals such as:
+This project addresses the **item cold-start problem** using a content-based approach.
 
-- User ratings
-- Click history
-- Reading history
-- Likes/dislikes
-- User-item interaction matrices
+Instead of relying on user behavior, the system analyzes:
 
-These signals are unavailable for a new user or a new article.
+- Article headlines
+- Article descriptions
+- Article categories
 
-This project addresses that challenge by using the **content of the articles themselves**.
+The content is transformed into numerical representations using **TF-IDF**, and **Cosine Similarity** is used to identify the most similar articles.
 
-The system analyzes article headlines and descriptions, converts textual information into numerical representations using **TF-IDF**, and calculates similarity between articles using **Cosine Similarity**.
+### Core Pipeline
 
-The final system is exposed through an interactive **Streamlit web application**.
+```text
+HuffPost News Dataset
+        ↓
+Data Cleaning
+        ↓
+Text Preprocessing
+        ↓
+Headline + Description
+        ↓
+TF-IDF Vectorization
+        ↓
+TF-IDF Matrix
+        ↓
+User Selects Article
+        ↓
+Cosine Similarity
+        ↓
+Top 5 Similar Articles
+        ↓
+Similarity Score + Shared Keywords
+        ↓
+Streamlit Web Application
+```
 
 ---
 
 # 🎯 Problem Statement
 
-Recommendation systems often suffer from the **cold-start problem** when sufficient user-item interaction data is unavailable.
+Traditional recommendation systems often depend on user-item interaction data.
 
-### New User
+For a newly published article:
 
 ```text
+New Article
+    ↓
+No clicks
+No ratings
+No likes
 No reading history
-        ↓
-No interaction data
-        ↓
-Collaborative filtering cannot reliably recommend
+    ↓
+Collaborative filtering struggles
 ```
 
-### New Article
+This is known as the **item cold-start problem**.
+
+### Proposed Solution
+
+Use the article's own content:
 
 ```text
-New article
-     ↓
-No users have interacted with it yet
-     ↓
-Limited collaborative signals
+New Article
+    ↓
+Headline + Description
+    ↓
+Text Processing
+    ↓
+TF-IDF
+    ↓
+Content Representation
+    ↓
+Similarity Search
+    ↓
+Relevant Articles
 ```
 
-This project solves the problem using a **content-based approach**:
-
-```text
-Article Content
-      ↓
-Text Preprocessing
-      ↓
-TF-IDF Representation
-      ↓
-Cosine Similarity
-      ↓
-Similarity Ranking
-      ↓
-Top-N Recommendations
-```
-
----
-
-# 💡 Solution
-
-Instead of asking:
-
-> "What did similar users read?"
-
-the system asks:
-
-> "Which articles have content most similar to this article?"
-
-For example:
-
-```text
-Selected Article
-"Apple launches new AI-powered device"
-
-                ↓
-
-TF-IDF + Cosine Similarity
-
-                ↓
-
-Recommended Articles
-
-1. Apple introduces new AI technology
-2. New AI devices enter the market
-3. Technology companies invest in AI
-4. Apple expands artificial intelligence research
-5. Latest developments in AI hardware
-```
-
-The system therefore works without requiring user profiles or historical interactions.
-
----
-
-# ✨ Key Features
-
-## 🔍 Article Search
-
-Users can search for articles using keywords from the headline.
-
-Examples:
-
-```text
-Apple
-Climate
-Trump
-Technology
-AI
-Politics
-```
-
----
-
-## 🗂️ Category Filtering
-
-Users can narrow article searches using available news categories.
-
-This helps users find relevant articles more efficiently.
-
----
-
-## 📰 Article Selection
-
-After searching, users can select an article from the matching results.
-
-The application displays information such as:
-
-- Article headline
-- Category
-- Summary
-- Publication date
-
----
-
-## 🤖 Content-Based Recommendations
-
-The selected article is compared against the article corpus using TF-IDF representations and cosine similarity.
-
-The system returns the **Top 5 most similar articles**.
-
----
-
-## 📊 Similarity Score
-
-Each recommendation includes a similarity percentage.
-
-Example:
-
-| Article | Similarity |
-|---|---:|
-| Article A | 82.41% |
-| Article B | 76.92% |
-| Article C | 71.53% |
-
-A higher score indicates greater textual similarity.
-
----
-
-## 🔑 Shared Keywords
-
-The application identifies important terms shared between the selected article and recommended articles.
-
-Example:
-
-```text
-Why Recommended
-
-AI, technology, Apple, device, innovation
-```
-
-This provides an additional explanation for why an article was recommended.
+This allows recommendations to be generated without requiring historical user interactions.
 
 ---
 
 # 🧠 Machine Learning Approach
 
-The project uses a **content-based recommendation architecture**.
+## Content-Based Filtering
 
-## 1. Text Preprocessing
+The system uses **content-based filtering**.
 
-Article text is cleaned before feature extraction.
+Articles are recommended based on the similarity of their textual content.
+
+---
+
+# 🔢 TF-IDF
+
+TF-IDF stands for **Term Frequency–Inverse Document Frequency**.
+
+It assigns importance to words based on:
+
+- How frequently a word occurs in an article.
+- How uncommon the word is across the complete collection of articles.
+
+The project uses `TfidfVectorizer` from Scikit-learn.
+
+---
+
+# 📐 Cosine Similarity
+
+After converting articles into TF-IDF vectors, the system calculates their similarity using **Cosine Similarity**.
+
+```text
+Article A → TF-IDF Vector
+Article B → TF-IDF Vector
+             ↓
+      Cosine Similarity
+             ↓
+      Similarity Score
+```
+
+A higher score indicates that the articles have more similar textual representations.
+
+The system then selects the **Top 5 most similar articles**.
+
+---
+
+# 🧹 Data Preprocessing
+
+The text preprocessing pipeline includes:
 
 ```text
 Raw Text
@@ -219,107 +162,25 @@ Lemmatization
 Clean Text
 ```
 
----
+The headline and short description are combined to create a richer text representation.
 
-# 📐 TF-IDF Feature Extraction
-
-TF-IDF stands for **Term Frequency – Inverse Document Frequency**.
-
-It represents each article as a numerical vector based on the importance of words within the document collection.
-
-The basic idea is:
-
-```text
-Important words → Higher TF-IDF weight
-Common words    → Lower TF-IDF weight
+```python
+text = headline + short_description
 ```
 
-This transforms textual articles into numerical vectors that can be compared mathematically.
-
----
-
-# 📏 Cosine Similarity
-
-After TF-IDF transformation, the system calculates similarity between articles using **Cosine Similarity**.
-
-```text
-Article A → TF-IDF Vector
-Article B → TF-IDF Vector
-
-             ↓
-
-       Cosine Similarity
-
-             ↓
-
-       Similarity Score
-```
-
-The similarity score is used to rank candidate articles.
-
-The most similar articles are returned as recommendations.
-
----
-
-# 🏗️ System Architecture
-
-```text
-                    ┌──────────────────────┐
-                    │   HuffPost Dataset   │
-                    │   ~209K Articles     │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │  Data Preprocessing  │
-                    │                      │
-                    │ Cleaning             │
-                    │ Tokenization         │
-                    │ Stopword Removal     │
-                    │ Lemmatization        │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │    TF-IDF Model      │
-                    │  Feature Extraction  │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │  TF-IDF Matrix       │
-                    │  Precomputed Model   │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-User ───────► Streamlit UI
-                 │
-                 ▼
-          Search Article
-                 │
-                 ▼
-          Select Article
-                 │
-                 ▼
-        Cosine Similarity
-                 │
-                 ▼
-       Similarity Ranking
-                 │
-                 ▼
-         Top 5 Articles
-                 │
-                 ▼
-      Similarity + Keywords
-```
+Missing text values are also handled before model training.
 
 ---
 
 # 📊 Dataset
 
-The project uses the **HuffPost News Category Dataset** containing approximately **209,527 articles**.
+The project uses the **HuffPost News Category Dataset**.
 
-Relevant fields include:
+Approximately:
+
+**209,527 news articles**
+
+The dataset contains:
 
 - `headline`
 - `short_description`
@@ -327,95 +188,113 @@ Relevant fields include:
 - `authors`
 - `date`
 
-The project combines textual fields to create article representations for recommendation.
-
-The full dataset is **not stored directly in this GitHub repository** because of its size. A dataset source/download link can be added here when the deployment setup is finalized.
-
----
-
-# 🧪 Exploratory Data Analysis
-
-The project includes exploratory analysis covering:
-
-- Dataset dimensions
-- Missing values
-- Duplicate records
-- Category distribution
-- Article text characteristics
-- Word-count distribution
-- Word frequency analysis
-- Word cloud visualization
-
-The analysis is available in:
+The main textual representation is constructed using:
 
 ```text
-notebooks/01_eda.ipynb
+headline + short_description
 ```
 
 ---
 
-# 🖥️ Application Workflow
+# 🔍 Application Features
+
+## 1. Article Search
+
+Users can search for articles using headline keywords.
+
+Examples:
 
 ```text
-1. Open application
-        ↓
-2. Search article
-        ↓
-3. Select category
-        ↓
-4. Select article
-        ↓
-5. View article information
-        ↓
-6. Generate recommendations
-        ↓
-7. View Top 5 similar articles
-        ↓
-8. Inspect similarity and shared keywords
+Apple
+Climate
+Trump
+Technology
 ```
+
+## 2. Category Filtering
+
+Users can narrow search results by news category.
+
+## 3. Article Selection
+
+The application displays:
+
+- Headline
+- Category
+- Summary
+- Publication date
+
+## 4. Top 5 Recommendations
+
+The system generates the five most similar articles using Cosine Similarity.
+
+## 5. Similarity Score
+
+Each recommendation includes a similarity percentage.
+
+## 6. Recommendation Explanation
+
+The application identifies shared high-weight keywords between the selected article and recommended articles.
+
+This provides a simple explanation of:
+
+> **Why was this article recommended?**
 
 ---
 
-# 📸 Application Screenshots
+# 🖥️ Application Screenshots
 
-Place screenshots in the repository under:
-
-```text
-screenshots/
-├── home.png
-├── search.png
-└── recommendations.png
-```
-
-### Home Page
+## Home Page
 
 ![Home Page](screenshots/home.png)
 
-### Article Search
+## Article Search
 
-![Article Search](screenshots/search.png)
+![Search](screenshots/search.png)
 
-### Recommendation Results
+## Recommendations
 
-![Recommendation Results](screenshots/recommendations.png)
+![Recommendations](screenshots/recommendations.png)
 
 ---
 
-# 🛠️ Technology Stack
+# 🏗️ Project Architecture
 
-| Technology | Purpose |
-|---|---|
-| Python | Core development |
-| Pandas | Data processing |
-| NumPy | Numerical operations |
-| NLTK | Natural Language Processing |
-| Scikit-learn | TF-IDF and similarity |
-| Joblib | Model serialization |
-| Streamlit | Web application |
-| Matplotlib | Data visualization |
-| WordCloud | Text visualization |
-| Git | Version control |
-| GitHub | Source code hosting |
+```text
+                         ┌──────────────────────┐
+                         │    HuffPost Dataset  │
+                         └──────────┬───────────┘
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │  Data Preprocessing  │
+                         └──────────┬───────────┘
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │   TF-IDF Vectorizer  │
+                         └──────────┬───────────┘
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │    TF-IDF Matrix     │
+                         └──────────┬───────────┘
+                                    │
+                                    ▼
+┌───────────────┐         ┌──────────────────────┐
+│     User      │────────▶│   Streamlit App      │
+└───────────────┘         └──────────┬───────────┘
+                                     │
+                                     ▼
+                           ┌─────────────────────┐
+                           │ Cosine Similarity   │
+                           └─────────┬───────────┘
+                                     │
+                                     ▼
+                           ┌─────────────────────┐
+                           │ Top 5 Recommendations│
+                           └─────────────────────┘
+```
 
 ---
 
@@ -438,25 +317,40 @@ cold-start-article-recommender/
 ├── notebooks/
 │   └── 01_eda.ipynb
 │
-├── models/
-│   └── README.md
-│
-├── data/
-│   └── ...
-│
 ├── screenshots/
 │   ├── home.png
 │   ├── search.png
 │   └── recommendations.png
 │
+├── models/
+│   └── README.md
+│
+├── README.md
 ├── requirements.txt
-├── .gitignore
-└── README.md
+└── .gitignore
 ```
 
 ---
 
-# ⚙️ Installation
+# ⚙️ Technologies Used
+
+| Technology                | Purpose                      |
+| ------------------------- | ---------------------------- |
+| Python                    | Core programming language    |
+| Pandas                    | Data processing              |
+| NumPy                     | Numerical operations         |
+| NLTK                      | Text preprocessing           |
+| Scikit-learn              | TF-IDF and Cosine Similarity |
+| Joblib                    | Model/artifact serialization |
+| Streamlit                 | Web application              |
+| Hugging Face Hub          | ML artifact storage          |
+| Git                       | Version control              |
+| GitHub                    | Source code hosting          |
+| Streamlit Community Cloud | Deployment                   |
+
+---
+
+# 🚀 Running the Project Locally
 
 ## 1. Clone the repository
 
@@ -467,18 +361,14 @@ cd cold-start-article-recommender
 
 ## 2. Create a virtual environment
 
+```bash
+python -m venv venv
+```
+
 ### Windows
 
 ```bash
-python -m venv venv
 venv\Scripts\activate
-```
-
-### Linux / macOS
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
 ```
 
 ## 3. Install dependencies
@@ -487,11 +377,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
----
-
-# ▶️ Running the Application
-
-Start the Streamlit application:
+## 4. Run the Streamlit application
 
 ```bash
 streamlit run app/app.py
@@ -501,326 +387,184 @@ The application will open in your browser.
 
 ---
 
-# 🧠 Training and Model Generation
+# ☁️ Deployment Architecture
 
-The project separates model generation from application execution.
+Large ML artifacts are intentionally **not stored inside the GitHub repository**.
 
-The training script is:
-
-```text
-src/train_model.py
-```
-
-It generates reusable artifacts such as:
+Instead, the project separates source code from large model artifacts.
 
 ```text
-TF-IDF Vectorizer
-TF-IDF Matrix
-Processed Article Dataset
+                 GitHub
+                   │
+                   ▼
+             Streamlit Cloud
+                   │
+                   ▼
+              app/app.py
+                   │
+                   │ hf_hub_download()
+                   ▼
+             Hugging Face
+                   │
+        ┌──────────┼──────────┐
+        ▼          ▼          ▼
+    Dataset    TF-IDF      Vectorizer
+    Artifact    Matrix      Artifact
+        │          │          │
+        └──────────┼──────────┘
+                   ▼
+             Live Application
 ```
 
-These artifacts can then be loaded by the Streamlit application.
+### Hugging Face Artifacts
 
-This avoids rebuilding the complete TF-IDF model every time the application starts.
+The large serialized artifacts are hosted separately:
+
+**Hugging Face Dataset:**  
+https://huggingface.co/datasets/abcd922436/cold-start-article-recommender-artifacts
+
+The application downloads the required artifacts when running.
+
+This keeps the GitHub repository lightweight while allowing the deployed application to use the complete model artifacts.
 
 ---
 
-# ⚡ Performance Considerations
+# 🧠 Engineering Decisions
 
-The project works with a large dataset of approximately **209K articles**.
+## Why Content-Based Filtering?
 
-During development, directly calculating a full dense cosine-similarity matrix caused unnecessary memory consumption.
+The project focuses on the **item cold-start problem**.
 
-Instead, similarity is calculated only for the selected article:
+Content-based filtering does not require previous user-item interactions, making it suitable for recommending newly introduced articles based on their textual content.
 
-```text
-Selected Article
-      ↓
-One TF-IDF Vector
-      ↓
-Compare against TF-IDF matrix
-      ↓
-Rank similarity scores
-      ↓
-Return Top N
-```
+## Why TF-IDF?
 
-This avoids constructing an unnecessary full article-by-article similarity matrix.
+TF-IDF is:
 
----
+- Lightweight
+- Interpretable
+- Efficient for textual data
+- Easy to inspect
+- A strong baseline for content-based recommendation
 
-# 🔄 Cold-Start Advantage
+## Why Cosine Similarity?
 
-The main advantage of this architecture is that it does **not require user interaction history**.
+Cosine Similarity works well for comparing high-dimensional text representations.
 
-### Traditional collaborative approach
+## Why not calculate the complete similarity matrix?
+
+Calculating similarity between every pair of 209K+ articles would require a very large amount of memory.
+
+Instead, the system calculates:
 
 ```text
-User History
-     ↓
-Interactions
-     ↓
-User-Item Matrix
-     ↓
-Recommendations
+One selected article
+        ×
+All available articles
 ```
 
-### This project
-
-```text
-Article Content
-     ↓
-TF-IDF
-     ↓
-Content Similarity
-     ↓
-Recommendations
-```
-
-Therefore, recommendations can be generated even when:
-
-- A user is new
-- An article is new
-- There is no rating history
-- There is no click history
-- There is no user profile
-
----
-
-# 🔎 Explainability
-
-For every recommended article, the application provides:
-
-```text
-Recommended Article
-        +
-Similarity Score
-        +
-Shared Keywords
-```
-
-This allows users to understand the textual relationship between the selected article and its recommendation.
-
----
-
-# 📈 Example
-
-Suppose the user selects:
-
-```text
-"Apple announces new artificial intelligence technology"
-```
-
-The system may identify:
-
-```text
-Recommended Article:
-"Apple expands its AI research"
-
-Similarity:
-78.42%
-
-Why Recommended:
-Apple, AI, technology, research
-```
-
-The recommendation is therefore based on measurable textual similarity rather than random selection.
-
----
-
-# 🔐 Data & Repository Strategy
-
-Large files are intentionally excluded from GitHub using `.gitignore`.
-
-This includes:
-
-```text
-Large datasets
-Model artifacts
-Virtual environments
-Python cache files
-```
-
-The repository focuses on:
-
-```text
-Source Code
-+
-ML Pipeline
-+
-EDA
-+
-Application
-+
-Documentation
-```
-
-This keeps the Git repository lightweight and maintainable.
-
----
-
-# 🚀 Deployment
-
-The application is designed to be deployed as a Streamlit web application.
-
-The planned deployment architecture is:
-
-```text
-GitHub
-   │
-   ▼
-Streamlit Application
-   │
-   ├── Application Code
-   ├── Dependencies
-   └── Model Artifacts
-           │
-           ▼
-      Recommendation Engine
-```
-
-Large datasets and serialized ML artifacts should be hosted separately rather than committed directly to GitHub.
-
-> Deployment is currently the next project stage. Once the live application is deployed, a public demo link will be added here.
+This significantly reduces the memory requirement during recommendation requests.
 
 ---
 
 # ⚠️ Limitations
 
-### 1. Content-only recommendations
+### 1. Lexical similarity
 
-Recommendations depend heavily on textual similarity.
-
-Two articles may be semantically related but use different vocabulary and therefore receive a lower similarity score.
-
-### 2. No personalized recommendations
-
-The current system does not model:
-
-- User preferences
-- Reading history
-- Click behavior
-- Likes/dislikes
-
-Therefore, recommendations are article-to-article rather than user-personalized.
-
-### 3. TF-IDF limitations
-
-TF-IDF captures word importance but does not fully understand semantic meaning.
+TF-IDF primarily captures word-level importance and overlap. It does not understand language semantics as deeply as transformer-based embeddings.
 
 For example:
 
 ```text
-"car"
+car
+automobile
 ```
 
-and
+may not receive a high similarity purely because they have similar meanings.
 
-```text
-"automobile"
-```
+### 2. No personalization
 
-may be semantically related but are treated as different tokens.
+The current recommender does not use:
 
-### 4. Large-scale similarity computation
+- User history
+- Click behavior
+- Ratings
+- Likes
+- Reading time
+- Personal preferences
 
-Comparing a query article against a very large corpus can still require computational resources.
+### 3. Headline-based search
+
+The application's search functionality currently searches article headlines using keyword matching rather than semantic search.
+
+### 4. No user-interaction ground truth
+
+The dataset does not provide user click/rating data, so real user preference evaluation is outside the scope of the current implementation.
 
 ---
 
 # 🔮 Future Improvements
 
-## 1. Semantic Embeddings
+## Semantic Embeddings
 
-Replace or complement TF-IDF with:
+Replace or complement TF-IDF with transformer-based embeddings such as Sentence-BERT.
 
-- Sentence Transformers
-- BERT embeddings
-- Other transformer-based embeddings
+```text
+TF-IDF
+   ↓
+Sentence-BERT Embeddings
+   ↓
+Semantic Similarity
+   ↓
+Improved Recommendations
+```
 
-This would improve semantic understanding.
+## Efficient Vector Search
 
-## 2. Hybrid Recommendation System
+For larger-scale recommendation systems, approximate nearest-neighbor search using technologies such as FAISS or vector databases could improve retrieval efficiency.
 
-Combine:
+## Hybrid Recommendation
+
+A future version could combine:
 
 ```text
 Content-Based Filtering
           +
-Collaborative Filtering
-          +
-User Preferences
+User Interaction Data
+          ↓
+Hybrid Recommendation System
 ```
 
-to create personalized recommendations.
-
-## 3. User Profiles
-
-Allow users to build preference profiles based on:
-
-- Selected categories
-- Reading history
-- Saved articles
-- Likes/dislikes
-
-## 4. Recommendation Feedback
-
-Add feedback mechanisms such as:
-
-```text
-👍 Relevant
-👎 Not Relevant
-```
-
-Collected feedback could later be used to improve ranking.
-
-## 5. Advanced Ranking
-
-A future ranking pipeline could combine:
-
-```text
-Content Similarity
-+
-Recency
-+
-Category Relevance
-+
-User Preference
-+
-Popularity
-```
-
-## 6. Vector Database
-
-For larger article collections, the system could use vector search infrastructure such as:
-
-- FAISS
-- Milvus
-- Pinecone
-- Weaviate
-
-This would make similarity retrieval more scalable.
+This could provide both cold-start capability and personalization.
 
 ---
 
-# 🎓 Learning Outcomes
+# 📈 Current System
 
-This project demonstrates practical experience with:
+The current system provides:
 
-- Recommendation Systems
-- Cold-Start Problem
-- Natural Language Processing
-- Text Preprocessing
-- Feature Engineering
-- TF-IDF
-- Cosine Similarity
-- Exploratory Data Analysis
-- Model Serialization
-- Streamlit Application Development
-- Git & GitHub
-- ML Project Architecture
-- Deployment Preparation
-- Memory and Performance Optimization
+- ✅ Content-based article recommendation
+- ✅ Item cold-start handling
+- ✅ 209K+ article dataset
+- ✅ Text preprocessing pipeline
+- ✅ TF-IDF feature representation
+- ✅ Cosine Similarity recommendation
+- ✅ Top-5 recommendations
+- ✅ Similarity scores
+- ✅ Shared keyword explanations
+- ✅ Category filtering
+- ✅ Article search
+- ✅ Streamlit interface
+- ✅ Cloud deployment
+- ✅ Separate ML artifact hosting
+
+---
+
+# 🌐 Live Demo
+
+Try the deployed application:
+
+👉 **https://cold-start-article-recommender.streamlit.app/**
 
 ---
 
@@ -830,10 +574,10 @@ This project demonstrates practical experience with:
 
 B.Tech Computer Science Engineering
 
-Developed as part of the **IIT Jammu Data Science & AI Internship**.
-
 ---
 
-# 📄 License
+# ⭐ Acknowledgement
 
-This project is intended for educational and portfolio purposes.
+This project was developed as part of the **IIT Jammu Data Science & AI Internship**.
+
+The project focuses on applying practical machine learning, natural language processing, recommendation systems, software engineering, and deployment concepts to a real-world recommendation problem.
